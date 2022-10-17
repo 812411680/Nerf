@@ -8,7 +8,7 @@ import imageio
 import json
 import random
 import time
-from run_nerf_helpers import *
+from run_nerf_helpers_modified import *
 from load_llff import load_llff_data
 from load_deepvoxels import load_dv_data
 from load_blender import load_blender_data
@@ -485,9 +485,9 @@ def config_parser():
                         default=5e-4, help='learning rate')
     parser.add_argument("--lrate_decay", type=int, default=250,
                         help='exponential learning rate decay (in 1000s)')
-    parser.add_argument("--chunk", type=int, default=1024*32,
+    parser.add_argument("--chunk", type=int, default=1024*16,
                         help='number of rays processed in parallel, decrease if running out of memory')
-    parser.add_argument("--netchunk", type=int, default=1024*64,
+    parser.add_argument("--netchunk", type=int, default=1024*32,
                         help='number of pts sent through network in parallel, decrease if running out of memory')
     parser.add_argument("--no_batching", action='store_true',
                         help='only take random rays from 1 image at a time')
@@ -562,11 +562,11 @@ def config_parser():
                         help='frequency of console printout and metric loggin')
     parser.add_argument("--i_img",     type=int, default=500,
                         help='frequency of tensorboard image logging')
-    parser.add_argument("--i_weights", type=int, default=500,
+    parser.add_argument("--i_weights", type=int, default=2500,
                         help='frequency of weight ckpt saving')
-    parser.add_argument("--i_testset", type=int, default=500,
+    parser.add_argument("--i_testset", type=int, default=2500,
                         help='frequency of testset saving')
-    parser.add_argument("--i_video",   type=int, default=500,
+    parser.add_argument("--i_video",   type=int, default=50000,
                         help='frequency of render_poses video saving')
 
     return parser
@@ -744,7 +744,7 @@ def train():
         i_batch = 0
 
     #N_iters = 1000000
-    N_iters = 10000
+    N_iters = 30000
     print('Begin')
     print('TRAIN views are', i_train)
     print('TEST views are', i_test)
